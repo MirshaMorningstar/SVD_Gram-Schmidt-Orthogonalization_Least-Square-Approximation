@@ -207,6 +207,8 @@ plt.show()
 Therefore, we can notice that after the orthogonalization of the considered dataset and performing Classification on the selected "Top K" Attributes of the resultant dataset, there has been a drastic improvement in the Accuracy Performance of the Classification Model from a mere 0.68 to a much appreciated 0.93 %. This strengthens our knowledge on the effects of orthogonal transformation on the data.
 
 
+
+
 ## SVD and Least Square Approximation
 
 ### Introduction Specificities:
@@ -343,17 +345,11 @@ def plot_metrics(singular_values, errors, explained_variances):
 
 ### Outputs Generated
 
-![image](https://github.com/MirshaMorningstar/SVD_Gram-Schmidt-Orthogonalization_Least-Square-Approximation/assets/84216040/5f9c0d19-711b-494c-9caa-4b9202542503)
+![image](https://github.com/MirshaMorningstar/SVD_Gram-Schmidt-Orthogonalization_Least-Square-Approximation/assets/84216040/5f9c0d19-711b-494c-9caa-4b9202542503)                ![image](https://github.com/MirshaMorningstar/SVD_Gram-Schmidt-Orthogonalization_Least-Square-Approximation/assets/84216040/ae2a3d4f-3c0d-4c28-9ff0-0705e66f6da0)
 
-![image](https://github.com/MirshaMorningstar/SVD_Gram-Schmidt-Orthogonalization_Least-Square-Approximation/assets/84216040/ae2a3d4f-3c0d-4c28-9ff0-0705e66f6da0)
+![image](https://github.com/MirshaMorningstar/SVD_Gram-Schmidt-Orthogonalization_Least-Square-Approximation/assets/84216040/9b5d7e81-f9ff-46ef-9460-570dfcfe852d)                ![image](https://github.com/MirshaMorningstar/SVD_Gram-Schmidt-Orthogonalization_Least-Square-Approximation/assets/84216040/da1bc73d-23f0-4df5-b6d3-2a83eb18d2a1)
 
-![image](https://github.com/MirshaMorningstar/SVD_Gram-Schmidt-Orthogonalization_Least-Square-Approximation/assets/84216040/9b5d7e81-f9ff-46ef-9460-570dfcfe852d)
-
-![image](https://github.com/MirshaMorningstar/SVD_Gram-Schmidt-Orthogonalization_Least-Square-Approximation/assets/84216040/da1bc73d-23f0-4df5-b6d3-2a83eb18d2a1)
-
-![image](https://github.com/MirshaMorningstar/SVD_Gram-Schmidt-Orthogonalization_Least-Square-Approximation/assets/84216040/2091d3b3-e8f8-4496-950d-0dadc5b9bdde)
-
-![image](https://github.com/MirshaMorningstar/SVD_Gram-Schmidt-Orthogonalization_Least-Square-Approximation/assets/84216040/3abdbbe4-308d-4eb5-bf2b-32aed4c46c8d)
+![image](https://github.com/MirshaMorningstar/SVD_Gram-Schmidt-Orthogonalization_Least-Square-Approximation/assets/84216040/2091d3b3-e8f8-4496-950d-0dadc5b9bdde)                ![image](https://github.com/MirshaMorningstar/SVD_Gram-Schmidt-Orthogonalization_Least-Square-Approximation/assets/84216040/3abdbbe4-308d-4eb5-bf2b-32aed4c46c8d)
 
 ![image](https://github.com/MirshaMorningstar/SVD_Gram-Schmidt-Orthogonalization_Least-Square-Approximation/assets/84216040/aa599b39-2eec-4128-b255-8f6c512d77e8)
 
