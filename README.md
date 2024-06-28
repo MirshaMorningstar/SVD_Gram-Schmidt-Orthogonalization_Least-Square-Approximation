@@ -206,3 +206,146 @@ plt.show()
 #### Inference:
 Therefore, we can notice that after the orthogonalization of the considered dataset and performing Classification on the selected "Top K" Attributes of the resultant dataset, there has been a drastic improvement in the Accuracy Performance of the Classification Model from a mere 0.68 to a much appreciated 0.93 %. This strengthens our knowledge on the effects of orthogonal transformation on the data.
 
+
+## SVD and Least Square Approximation
+
+### Introduction Specificities:
+Image compression aims to reduce the amount of data required to represent an image while preserving its visual quality. SVD offers a powerful technique for achieving this. It decomposes the image into its essential components, allowing us to discard less important parts for compression and reconstruct an approximation later.
+
+Least squares approximations help us quantify the error introduced by discarding information during compression.
+
+### The Basic Concept Overview:
+Imagine a grayscale image as a matrix \( A \). SVD decomposes it into three matrices:
+1. **U (Left Singular Vectors):** An orthogonal matrix representing the directions of important variations in the image.
+2. **Σ (Singular Values):** A diagonal matrix containing values representing the significance of each direction (U vector) in capturing the image's information. Larger values indicate more importance.
+3. **V^T (Right Singular Vectors):** The transpose of another orthogonal matrix, related to how the image data is distributed across the directions in \( U \).
+
+By keeping only the top \( k \) largest singular values in \( \Sigma \) and setting the rest to zero, we create a compressed representation \( A_k \) of the original image. This captures the most important information with a smaller data size.
+
+### A Mathematical Overview:
+1. **Singular Value Decomposition (SVD):**
+\[ A = U \Sigma V^T \]
+where:
+- \( A \): Original image matrix (e.g., 4x4 for a 4x4 grayscale image)
+- \( U \): Left singular vectors matrix (size same as \( A \))
+- \( \Sigma \): Diagonal matrix containing singular values (size same as \( A \), but only non-zero values on the diagonal)
+- \( V^T \): Transpose of right singular vectors matrix (size same as \( A \))
+
+2. **Compressed Representation:**
+\[ \Sigma_k = \text{diag}(\sigma_1, \sigma_2, \ldots, \sigma_k, 0, \ldots, 0) \]
+\[ A_k = U \Sigma_k V^T \]
+where:
+- \( \Sigma_k \): Diagonal matrix containing only the top \( k \) singular values from \( \Sigma \).
+- \( A_k \): Compressed representation of the original image.
+
+3. **Least Squares Approximation and Error:**
+Reconstruction: Approximate the original image from the compressed form:
+\[ A_{k,\text{approx}} = U \Sigma_k V^T \]
+
+Mean Squared Error (MSE): Quantify the difference between original and reconstructed image:
+\[ \text{MSE} = \frac{1}{m \cdot n} \| A - A_{k,\text{approx}} \|^2 \]
+where:
+- \( \text{MSE} \): Mean Squared Error
+- \( \| \|^2 \): Squared Frobenius norm (measures matrix difference)
+- \( m, n \): Image dimensions
+
+By analyzing the MSE for different compression levels (different \( k \) values), we can determine the optimal compression ratio that balances image quality and file size.
+
+### Pythonic Code:
+
+#### Step 1: Load and Preprocess the Image
+We start by loading the image from a URL and converting it to grayscale using the `load_image` function. Grayscale conversion is necessary because SVD works on single-channel images.
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+from skimage import io, color, img_as_float
+import imageio
+
+def load_image(url):
+    image = io.imread(url)
+    if image.ndim == 3:
+        image = color.rgb2gray(image)
+    return img_as_float(image)
+```
+
+#### Step 2: Compute Singular Value Decomposition (SVD)
+```python
+def compute_svd(image):
+    U, S, Vt = np.linalg.svd(image, full_matrices=False)
+    return U, S, Vt
+```
+
+#### Step 3: Reconstruct Image Using Top k Singular Values
+```python
+def reconstruct_image(U, S, Vt, k):
+    return np.dot(U[:, :k], np.dot(np.diag(S[:k]), Vt[:k, :]))
+```
+
+#### Step 4: Compute the Least Squares Error
+```python
+def compute_error(original, reconstructed):
+    return np.linalg.norm(original - reconstructed)
+```
+
+#### Step 5: Compute Explained Variance Ratio
+```python
+def explained_variance_ratio(S, k):
+    return np.sum(S[:k]**2) / np.sum(S**2)
+```
+
+#### Step 6: Display and Save Results
+```python
+def display_and_save_results(original, reconstructed, k, error, explained_variance):
+    fig, axes = plt.subplots(1, 2, figsize=(10, 5))
+    # Display original image
+    axes[0].imshow(original, cmap='gray')
+    axes[0].set_title('Original Image')
+    axes[0].axis('off')
+    # Display reconstructed image
+    axes[1].imshow(reconstructed, cmap='gray')
+    axes[1].set_title(f'Reconstructed Image (k={k})')
+    axes[1].axis('off')
+    fig.suptitle(f'k={k}, Error={error:.2f}, Explained Variance={explained_variance:.2%}')
+    plt.show()
+    # Save the figure
+    fig.savefig(f'result_k_{k}.jpg')
+    plt.close(fig)
+    # Save the reconstructed image as a jpg file
+    imageio.imwrite(f'reconstructed_image_k_{k}.jpg', (reconstructed * 255).astype(np.uint8))
+```
+
+#### Step 7: Plot Metrics
+```python
+def plot_metrics(singular_values, errors, explained_variances):
+    fig, ax1 = plt.subplots()
+    color = 'tab:blue'
+    ax1.set_xlabel('k (number of singular values)')
+    ax1.set_ylabel('Error', color=color)
+    ax1.plot(singular_values, errors, color=color, marker='o', linestyle='-', label='Error')
+    ax1.tick_params(axis='y', labelcolor=color)
+    ax2 = ax1.twinx()  # instantiate a second axes that shares the same x-axis
+    color = 'tab:orange'
+    ax2.set_ylabel('Explained Variance Ratio', color=color)  # we already handled the x-label with ax1
+    ax2.plot(singular_values, explained_variances, color=color, marker='o', linestyle='-', label='Explained Variance Ratio')
+    ax2.tick_params(axis='y', labelcolor=color)
+    fig.tight_layout()  # otherwise the right y-label is slightly clipped
+    plt.title('Error and Explained Variance Ratio vs k')
+    plt.show()
+```
+
+### Inference from the Dual Line Plot
+The dual line plot shows the relationship between the number of singular values (\( k \)), the reconstruction error, and the explained variance ratio. Here's a detailed analysis:
+
+**Error Analysis:**
+- The reconstruction error (blue line) starts high when \( k \) is low and decreases rapidly as \( k \) increases.
+- The error drops significantly between \( k = 5 \) and \( k = 100 \).
+- After \( k = 100 \), the error decreases more gradually and stabilizes around a very low value.
+
+**Explained Variance Ratio:**
+- The explained variance ratio (orange line) increases sharply at the beginning.
+- By \( k = 50 \), the explained variance ratio is already very close to 1 (almost 99.9%).
+- After \( k = 100 \), the explained variance ratio changes very little, indicating that most of the variance in the image is already captured.
+
+**Conclusion on When to Stop:**
+To achieve a good balance between image quality and compression, we should choose a \( k \) where the error is low and the explained variance ratio is high.
