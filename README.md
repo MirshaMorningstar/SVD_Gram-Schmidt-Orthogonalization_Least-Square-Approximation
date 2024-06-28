@@ -1,14 +1,14 @@
 # GRAM SCHMIDT ORTHOGONALIZATION, SVD, LEAST SQUARE APPROXIMATION
 
-### Gram-Schmidt Orthogonalization Based Feature Selection
+## Gram-Schmidt Orthogonalization Based Feature Selection
 
-#### Introduction Specificities:
+### Introduction Specificities:
 Gram-Schmidt Orthogonalization (GSO) is a mathematical technique used in feature selection to create a new set of features that are uncorrelated (orthogonal) to each other while capturing most of the information from the original features. This helps improve machine learning model performance and reduces computational cost by dealing with a smaller, more informative feature set.
 
-#### The Basic Concept Overview:
+### The Basic Concept Overview:
 Imagine you have a bunch of arrows (features) pointing in different directions. Feature selection with GSO aims to find a new set of arrows that represent the same space but are perpendicular (orthogonal) to each other. These new, uncorrelated features will capture the essential information from the originals without redundancy.
 
-#### The Process Flow:
+### The Process Flow:
 Here's the process:
 1. Start with the first original feature vector.
 2. Project all subsequent features onto the space spanned by the already chosen features and remove that projection. This ensures the new feature is independent of the previous ones.
@@ -17,21 +17,31 @@ Here's the process:
 
 By the end, you have a set of orthogonal features that effectively capture the important information from the originals.
 
-Let's represent your original features as a set of vectors \( x_1, x_2, \ldots, x_n \) in an n-dimensional space. Here are the relevant formulas involved in GSO for feature selection:
+### Mathematical Overview 
 
-1. **Projection:** The projection of vector \( x_i \) onto the space spanned by vectors \( x_1, \ldots, x_{j-1} \) is:
-\[ \text{proj}_{(x_1, \ldots, x_{j-1})} (x_i) = \left( \frac{x_i \cdot x_1}{\|x_1\|^2} \right) x_1 + \ldots + \left( \frac{x_i \cdot x_{j-1}}{\|x_{j-1}\|^2} \right) x_{j-1} \]
-where \( \cdot \) denotes the dot product and \( \|x\| \) represents the vector's magnitude.
+![image](https://github.com/MirshaMorningstar/SVD_Gram-Schmidt-Orthogonalization_Least-Square-Approximation/assets/84216040/dacdcfad-cac2-41cb-9333-374beeafd33c)
 
-2. **Removing the projection:** To get the part of \( x_i \) orthogonal to the existing features:
-\[ x_i' = x_i - \text{proj}_{(x_1, \ldots, x_{j-1})} (x_i) \]
+Let's represent your original features as a set of vectors x_1, x_2, ..., x_n in an n-dimensional space. Here are the relevant formulas involved in GSO for feature selection:
 
-3. **Normalization (optional):** Normalize \( x_i' \) to get a unit-length vector (useful for some algorithms):
-\[ x_j = \frac{x_i'}{\|x_i'\|} \]
+**1. Projection:** The projection of vector x_i onto the space spanned by
 
-Here, \( x_j \) represents the new, j-th orthogonal feature vector.
+vectors x_1, ..., x_(j-1) is:
+proj_(x_1, ..., x_(j-1)) (x_i) = ((x_i . x_1) / ||x_1||^2) * x_1 + ... + ((x_i . x_(j-1)) / ||x_(j-1)||^2) * x_(j-1)
 
-By iteratively applying these equations, you obtain a set of orthogonal feature vectors that can be used in your machine learning model.
+where . denotes the dot product and ||x|| represents the vector's magnitude.
+
+**2. Removing the projection:** To get the part of x_i orthogonal to the existing features:
+
+x_i' = x_i - proj_(x_1, ..., x_(j-1)) (x_i)
+
+**3. Normalization (optional):** Normalize x_i' to get a unit-length vector (useful for some algorithms):
+
+x_j = x_i' / ||x_i' ||
+
+Here, x_j represents the new, j-th orthogonal feature vector.
+
+By iteratively applying these equations, you obtain a set of orthogonal feature
+vectors that can be used in your machine learning model.
 
 ### Breast Cancer Wisconsin (Diagnostic) Data Set
 
@@ -187,6 +197,11 @@ plt.title('Model Performance Comparison')
 plt.ylim(0, 1)
 plt.show()
 ```
+### Outputs Generated 
+
+![image](https://github.com/MirshaMorningstar/SVD_Gram-Schmidt-Orthogonalization_Least-Square-Approximation/assets/84216040/91f01233-1c61-4f95-ab13-4b53fbfb439f)
+
+![image](https://github.com/MirshaMorningstar/SVD_Gram-Schmidt-Orthogonalization_Least-Square-Approximation/assets/84216040/2c4ca692-eabf-49ea-b40b-5e76178ade62)
 
 #### Inference:
 Therefore, we can notice that after the orthogonalization of the considered dataset and performing Classification on the selected "Top K" Attributes of the resultant dataset, there has been a drastic improvement in the Accuracy Performance of the Classification Model from a mere 0.68 to a much appreciated 0.93 %. This strengthens our knowledge on the effects of orthogonal transformation on the data.
