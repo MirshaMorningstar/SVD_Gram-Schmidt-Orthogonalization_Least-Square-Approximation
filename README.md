@@ -224,32 +224,39 @@ By keeping only the top \( k \) largest singular values in \( \Sigma \) and sett
 
 ### A Mathematical Overview:
 1. **Singular Value Decomposition (SVD):**
-\[ A = U \Sigma V^T \]
+   
+A = U Σ V^T
+
 where:
-- \( A \): Original image matrix (e.g., 4x4 for a 4x4 grayscale image)
-- \( U \): Left singular vectors matrix (size same as \( A \))
-- \( \Sigma \): Diagonal matrix containing singular values (size same as \( A \), but only non-zero values on the diagonal)
-- \( V^T \): Transpose of right singular vectors matrix (size same as \( A \))
+○ A: Original image matrix (e.g., 4x4 for a 4x4 grayscale image)
+○ U: Left singular vectors matrix (size same as A)
+○ Σ: Diagonal matrix containing singular values (size same as A, but only non-zero values on the diagonal)
+○ V^T: Transpose of right singular vectors matrix (size same as A)
 
 2. **Compressed Representation:**
-\[ \Sigma_k = \text{diag}(\sigma_1, \sigma_2, \ldots, \sigma_k, 0, \ldots, 0) \]
-\[ A_k = U \Sigma_k V^T \]
+    
+Σ_k = diag(σ_1, σ_2, ..., σ_k, 0, ..., 0) // Top k singular values
+A_k = U Σ_k V^T
+
 where:
-- \( \Sigma_k \): Diagonal matrix containing only the top \( k \) singular values from \( \Sigma \).
-- \( A_k \): Compressed representation of the original image.
+○ Σ_k: Diagonal matrix containing only the top k singular values from Σ.
+○ A_k: Compressed representation of the original image.
 
 3. **Least Squares Approximation and Error:**
+   
 Reconstruction: Approximate the original image from the compressed form:
-\[ A_{k,\text{approx}} = U \Sigma_k V^T \]
 
+A_k_approx = U Σ_k V^T
+
+○ where:
+■ A_k_approx: Reconstructed approximation of the original image.
 Mean Squared Error (MSE): Quantify the difference between original and reconstructed image:
-\[ \text{MSE} = \frac{1}{m \cdot n} \| A - A_{k,\text{approx}} \|^2 \]
-where:
-- \( \text{MSE} \): Mean Squared Error
-- \( \| \|^2 \): Squared Frobenius norm (measures matrix difference)
-- \( m, n \): Image dimensions
 
-By analyzing the MSE for different compression levels (different \( k \) values), we can determine the optimal compression ratio that balances image quality and file size.
+MSE = (1 / (m * n)) * || A - A_k_approx ||^2 // m, n are image dimensions
+
+○ where:
+■ MSE: Mean Squared Error || ||^2: Squared Frobenius norm (measures matrix difference)
+By analyzing the MSE for different compression levels (different k values), we can determine the optimal compression ratio that balances image quality and file size.
 
 ### Pythonic Code:
 
@@ -334,7 +341,27 @@ def plot_metrics(singular_values, errors, explained_variances):
     plt.show()
 ```
 
+### Outputs Generated
+
+![image](https://github.com/MirshaMorningstar/SVD_Gram-Schmidt-Orthogonalization_Least-Square-Approximation/assets/84216040/5f9c0d19-711b-494c-9caa-4b9202542503)
+
+![image](https://github.com/MirshaMorningstar/SVD_Gram-Schmidt-Orthogonalization_Least-Square-Approximation/assets/84216040/ae2a3d4f-3c0d-4c28-9ff0-0705e66f6da0)
+
+![image](https://github.com/MirshaMorningstar/SVD_Gram-Schmidt-Orthogonalization_Least-Square-Approximation/assets/84216040/9b5d7e81-f9ff-46ef-9460-570dfcfe852d)
+
+![image](https://github.com/MirshaMorningstar/SVD_Gram-Schmidt-Orthogonalization_Least-Square-Approximation/assets/84216040/da1bc73d-23f0-4df5-b6d3-2a83eb18d2a1)
+
+![image](https://github.com/MirshaMorningstar/SVD_Gram-Schmidt-Orthogonalization_Least-Square-Approximation/assets/84216040/2091d3b3-e8f8-4496-950d-0dadc5b9bdde)
+
+![image](https://github.com/MirshaMorningstar/SVD_Gram-Schmidt-Orthogonalization_Least-Square-Approximation/assets/84216040/3abdbbe4-308d-4eb5-bf2b-32aed4c46c8d)
+
+![image](https://github.com/MirshaMorningstar/SVD_Gram-Schmidt-Orthogonalization_Least-Square-Approximation/assets/84216040/aa599b39-2eec-4128-b255-8f6c512d77e8)
+
+
 ### Inference from the Dual Line Plot
+
+![image](https://github.com/MirshaMorningstar/SVD_Gram-Schmidt-Orthogonalization_Least-Square-Approximation/assets/84216040/38b2288b-22f4-442d-989b-156258954100)
+
 The dual line plot shows the relationship between the number of singular values (\( k \)), the reconstruction error, and the explained variance ratio. Here's a detailed analysis:
 
 **Error Analysis:**
@@ -348,4 +375,10 @@ The dual line plot shows the relationship between the number of singular values 
 - After \( k = 100 \), the explained variance ratio changes very little, indicating that most of the variance in the image is already captured.
 
 **Conclusion on When to Stop:**
-To achieve a good balance between image quality and compression, we should choose a \( k \) where the error is low and the explained variance ratio is high.
+To achieve a good balance between image quality and compression, we should choose a k where the error is low and the explained variance ratio is high.
+From the plot, k = 50 captures almost all the variance (99.9%) while significantly reducing the error. This suggests that k = 50 provides a good compressed image with minimal visual loss.
+
+**Visual Loss and Compression:**
+Beyond k = 100, the improvement in image quality becomes marginal as the error reduction is minimal, and the explained variance ratio is almost constant.
+
+Therefore, using more than 100 singular values does not substantially improve the visual quality but increases the computational cost and storage size.
